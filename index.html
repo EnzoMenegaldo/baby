@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @font-face {
+        font-family: 'Apricot Regular';
+        font-style: normal;
+        font-weight: normal;
+        src: local('Apricot Regular'), url('Apricot-BF650c4a6357ce1.woff') format('woff');
+    }
+    body {
+      font-family:'Apricot Regular';
+      text-align: center;
+      margin-top: 50px;
+      background-color: #fdfaf0;
+      overflow: hidden;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .leaf {
+      width: 100px;
+      height: 150px;
+      position: absolute;
+
+      &.left {
+        left: -20px;
+        top: 100px;
+      }
+
+      &.right {
+        right: -21px;
+        top: 100px;
+        transform: scaleX(-1);
+      }
+    }
+
+    .mongol {
+      width: 200px;
+      margin-top: 150px;
+    }
+
+    .ours {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 150px;
+    }
+
+    .poney {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 150px;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      font-size: 50px;
+    }
+
+    #intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nuage {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      width: 300px;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .random-button {
+      background-image: url(./images/Nuage.png);
+    }
+
+    .good-button {
+      background-image: url(./images/Nuage2.png);
+    }
+
+    .secret {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 50px;
+      font-weight: bold;
+
+      > img {
+        width: 300px;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="content">
+    <img src="./images/fg.png" class="leaf left"/>
+    <img src="./images/fg.png" class="leaf right"/>
+    <img src="./images/Mongolefiere.png" class="mongol"/>
+    <img src="./images/Nounours.png" class="ours"/>
+    <img src="./images/Licorne.png" class="poney"/>
+    <div id="intro">
+      <h1>Alors, <span style="color: #38b6ff">Garçon</span> ou <span style="color: #ff66c4">Fille</span> ?</h1>
+      <div class="nuage random-button">
+        <span>Clique ici !</span>
+      </div>
+      <div class="nuage good-button" style="display: none;">
+        <span>La vérité est ici !</span>
+      </div>
+    </div>
+    <div id="garçon" class="secret">
+      <img src="./images/Garçon.png"/>
+      <p>C'est un <span style="color: #0097B2">Garçon</span> !</p>
+    </div>
+    <div id="fille" class="secret">
+      <img src="./images/Fille.png"/>
+      <p>C'est une <span style="color: #e84484">Fille</span> !</p>
+    </div>
+  </div>
+  <script>
+      let i = 0;
+      let timer = null;
+      const texts = [
+        'Loupé, ici !',
+        'Encore loupé ...',
+        'Oups',
+        'Essaye encore',
+        'Fille ?',
+        'Garçon ?',
+        'Tu y es presque',
+        'Peut être là',
+        'Ici pour voir',
+        '¯\\_(ツ)_/¯'
+      ]
+      const getRandomPosition = () => {
+        const maxLeft = window.innerWidth - 300;
+        const maxTop = window.innerHeight - 150;
+
+        const left = Math.floor(Math.random() * maxLeft);
+        const top = Math.floor(Math.random() * maxTop);
+
+        return { top, left };
+      }
+      const nuage = document.getElementsByClassName('random-button')[0];
+      const goodNuage = document.getElementsByClassName('good-button')[0];
+      const garçon = document.getElementById('garçon');
+      const fille = document.getElementById('fille');
+      const intro = document.getElementById('intro');
+      const mongol = document.getElementsByClassName('mongol')[0];
+      goodNuage.onclick = () => {
+        mongol.style.display = 'none';
+        intro.style.display = 'none';
+        garçon.style.display = 'none';
+        fille.style.display = 'flex';
+      }
+      nuage.onclick = () => {
+        nuage.style.position = 'absolute'
+        const p = getRandomPosition();
+        nuage.style.top = p.top +'px'
+        nuage.style.left  = p.left + 'px';
+        nuage.children[0].textContent = texts[i++]
+        if(i >= texts.length) {
+          i = 0;
+        }
+        if(timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          nuage.style.display = 'none'
+          timer= null;
+          goodNuage.style.display = 'flex';
+        }, 5000);
+      }
+    window.nuage =nuage;
+  </script>
+</body>
+</html>
